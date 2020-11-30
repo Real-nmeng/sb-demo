@@ -1,9 +1,16 @@
 package com.mn;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.NumericNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.mn.model.dto.Group;
+import com.mn.model.dto.GroupUser;
 import com.mn.model.dto.User;
 import com.mn.model.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -211,8 +218,73 @@ public class Test {
             }
         }
 
-
     }
 
+    @org.junit.jupiter.api.Test
+    public void testJsonInclude() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        User user = new User();
+        user.setId(1000);
+        user.setName("小红");
+        System.out.println(objectMapper.writeValueAsString(user));
+    }
+
+
+    @org.junit.jupiter.api.Test
+    public void testJsonTree() {
+        JsonNodeFactory factory = JsonNodeFactory.instance;
+        ObjectNode objectNode = factory.objectNode();
+        objectNode.put("id", 111);
+        objectNode.put("username", "zhangsan");
+        System.out.println("objectNode:" + objectNode);
+        NumericNode numberNode = factory.numberNode(99);
+        System.out.println("numberNode:" + numberNode);
+    }
+
+    /**
+     * 测试循环嵌套
+     */
+    @org.junit.jupiter.api.Test
+    public void testJson() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Group group = new Group();
+        group.setGroupId("2002");
+        group.setGroupTitle("群标题");
+        GroupUser user = new GroupUser();
+        user.setGroup(group);
+        user.setId(1111);
+        user.setName("Jeo");
+        user.setDescription("描述");
+        user.setMobile("18888888888");
+        group.setGroupUser(user);
+        System.out.println(group);
+        String s = objectMapper.writeValueAsString(group);
+//        String s ="{\"groupId\":\"2020\",\"groupTitle\":\"群标题\",\"user\":{\"group.groupId\":\"2020\",\"id\":11111,\"name\":\"群成员1\",\"description\":\"这是一号群成员\",\"mobile\":\"18888888888\"}}";
+        System.out.println(s);
+        Group group1 = objectMapper.readValue(s, Group.class);
+        System.out.println(group1);
+    }
+
+
+    @org.junit.jupiter.api.Test
+    public void testFastjson() throws Exception {
+        Group group = new Group();
+        group.setGroupId("2002");
+        group.setGroupTitle("群标题");
+        GroupUser user = new GroupUser();
+        user.setGroup(group);
+        user.setId(1111);
+        user.setName("Jeo");
+        user.setDescription("描述");
+        user.setMobile("18888888888");
+        group.setGroupUser(user);
+        System.out.println(group);
+        String s = JSON.toJSONString(group, SerializerFeature.DisableCircularReferenceDetect);
+//        String s ="{\"groupId\":\"2020\",\"groupTitle\":\"群标题\",\"user\":{\"group.groupId\":\"2020\",\"id\":11111,\"name\":\"群成员1\",\"description\":\"这是一号群成员\",\"mobile\":\"18888888888\"}}";
+        System.out.println(s);
+        Group group1 = JSON.parseObject(s, Group.class);
+        System.out.println(group1);
+
+    }
 
 }
