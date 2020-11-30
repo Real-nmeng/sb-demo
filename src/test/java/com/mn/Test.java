@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.NumericNode;
@@ -12,9 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mn.model.dto.Group;
 import com.mn.model.dto.GroupUser;
 import com.mn.model.dto.User;
-import com.mn.model.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.validator.PublicClassValidator;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 

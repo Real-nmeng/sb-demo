@@ -1,10 +1,9 @@
 package com.mn.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author mengna
@@ -14,6 +13,6 @@ import java.util.List;
 public class Group implements Serializable {
     public String groupId;
     public String groupTitle;
-    @JsonBackReference
+//    @JsonManagedReference
     public GroupUser groupUser;
 }
